@@ -1,5 +1,6 @@
 package com.fgomes.listacontatos_dio
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,14 +13,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fgomes.listacontatos_dio.DetailActivity.Companion.EXTRA_CONTACT
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , ClickItemContactListener{
 
     private val rvList: RecyclerView by lazy {
         findViewById<RecyclerView>(R.id.rv_list)
     }
 
-    private val adapter = ContactAdapter()
+    private val adapter = ContactAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +43,6 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
     }
 
-
-
     private fun bindViews(){
         rvList.adapter = adapter
         rvList.layoutManager = LinearLayoutManager(this)
@@ -52,12 +52,12 @@ class MainActivity : AppCompatActivity() {
         adapter.updateList(
             arrayListOf(
                 Contact(
-                    "Teteste teste",
+                    "Teste1",
                     "(00) 0000-1111",
                     "img.png"
                 ),Contact(
-                    "Teste 2 teste",
-                    "(00) 0000-1111",
+                    "Teste 2",
+                    "(00) 0000-2222",
                     "img.png"
                 )
             )
@@ -86,6 +86,12 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun clickItemContact(contact: Contact) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(EXTRA_CONTACT, contact)
+        startActivity( intent )
     }
 
 
